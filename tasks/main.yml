@@ -1,0 +1,21 @@
+---
+# tasks file for httpd-amzlinux
+- name: install apache
+  ansible.builtin.package:
+    name: httpd
+    state: present
+
+- name: copy index file
+  ansible.builtin.copy:
+    src: index.html
+    dest: /var/www/html/index.html
+  notify:
+    - Restart httpd
+  tags:
+    - deploy
+
+- name: start service
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: yes
